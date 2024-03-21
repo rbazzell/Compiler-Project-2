@@ -7,6 +7,7 @@ public class FunctionDeclaration extends Declaration {
     public ArrayList<Param> params = null;
     public CompoundStatement stmt;
 
+    //TODO: Needs to be a TypeSpec VVVVVVVVVV
     public FunctionDeclaration(String in_type, ArrayList<Param> in_params, CompoundStatement in_stmt){
         typeSpec = in_type;
         params = in_params;
