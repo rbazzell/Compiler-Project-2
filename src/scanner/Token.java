@@ -1,4 +1,4 @@
-package scanner;
+package src.scanner;
 public class Token {
     public enum TokenType {
         ID,            //VARS & LITERALS

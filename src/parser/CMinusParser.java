@@ -1,9 +1,4 @@
-package src;
-
-import scanner.CMinusScanner2;
-import scanner.DFAException;
-import scanner.Token;
-import scanner.Token.TokenType;
+package src.parser;
 
 import java.io.IOException;
 import java.io.BufferedWriter;
@@ -11,6 +6,11 @@ import java.io.FileWriter;
 
 import java.util.ArrayList;
 import java.util.function.Function;
+
+import src.scanner.CMinusScanner2;
+import src.scanner.DFAException;
+import src.scanner.Token;
+import src.scanner.Token.TokenType;
 
 
 public class CMinusParser {
@@ -25,7 +25,6 @@ public class CMinusParser {
         Program head = null;
         if (scanner.viewNextToken().type != Token.TokenType.EOF) {
             head = parseProgram();
-
         }
         return head;
         //TODO: throw error if left over tokens after parseProgram()?
@@ -33,7 +32,6 @@ public class CMinusParser {
 
     private Program parseProgram() throws IOException, DFAException, ParseException {
         Program program = null;
-        currToken = scanner.getNextToken(); //TODO: is this needed? Doesn't the scanner start on the first token?
         if (currToken.type == TokenType.INT || currToken.type == TokenType.VOID) {
             ArrayList<Declaration> declList = new ArrayList<Declaration>();
             Declaration decl = parseDeclaration();
@@ -47,7 +45,7 @@ public class CMinusParser {
             program = new Program(declList);
 
         } else {
-            throw new ParseException("Expected: INT or VOID\nReceived: " + currToken.type.name());
+            throw new ParseException("ParseProgram() Expected: INT or VOID\nReceived: " + currToken.type.name());
 
         }
 
@@ -68,7 +66,7 @@ public class CMinusParser {
 
                 decl = parseFunctionDeclarationPrime(typeSpec, id);
             } else {
-                throw new ParseException("Expected: ID\nReceived: " + currToken.type.name());
+                throw new ParseException("() Expected: ID\nReceived: " + currToken.type.name());
             }
             
         } else if (currToken.type == TokenType.INT) {
@@ -94,17 +92,15 @@ public class CMinusParser {
         if (currToken.type == TokenType.SEMI) {
             //Take ";"
             currToken = scanner.getNextToken();
-            IDExpression idExpression = new IDExpression(id, null);
-            NUMExpression numExpression = new NUMExpression(0);
-            decl = new VariableDeclaration(idExpression, numExpression);
+            decl = new VariableDeclaration(id, 0);
         } else if (currToken.type == TokenType.L_BRACK) {
             //Take "["
             currToken = scanner.getNextToken();
-            NUMExpression numExpression = null;
+            int num = 0;
 
             if (currToken.type == TokenType.NUM) {
                 //Take NUM
-                numExpression = new NUMExpression((int)currToken.data);
+                num = (int)currToken.data;
                 currToken = scanner.getNextToken();
             } else {
                 throw new ParseException("Expected: NUM\nReceived: " + currToken.type.name());
@@ -124,8 +120,7 @@ public class CMinusParser {
                 throw new ParseException("Expected: ]\nReceived: " + currToken.type.name());
             }
 
-            IDExpression idExpression = new IDExpression(id, null);
-            decl = new VariableDeclaration(idExpression, numExpression);
+            decl = new VariableDeclaration(id, num);
 
         } else if (currToken.type == TokenType.L_PAREN) {
             decl = parseFunctionDeclarationPrime(typeSpec, id);
@@ -229,8 +224,6 @@ public class CMinusParser {
         String id = null;
         int num = 0;
         VariableDeclaration localDeclaration = null;
-        NUMExpression numExpression = null;
-        IDExpression idExpression = null;
         while (currToken.type == TokenType.INT) {
             
             //Take INT
@@ -239,7 +232,6 @@ public class CMinusParser {
                 //Take ID
                 id = (String)currToken.data;
                 //TODO: Is this how we do this? or do we pass the NUM as a num expression to the ID?
-                idExpression = new IDExpression(id, null);
                 currToken = scanner.getNextToken();
             } else {
                 throw new ParseException("Expected: ID\nReceived: " + currToken.type.name());
@@ -265,8 +257,7 @@ public class CMinusParser {
                 }
 
             }
-            numExpression = new NUMExpression(num);
-            localDeclaration = new VariableDeclaration(idExpression, numExpression);
+            localDeclaration = new VariableDeclaration(id, num);
 
             localDecls.add(localDeclaration);
         }

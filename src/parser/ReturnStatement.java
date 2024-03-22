@@ -1,13 +1,13 @@
-package src;
+package src.parser;
 
-public class ExpressionStatement extends Statement {
-    
+public class ReturnStatement extends Statement {
+
     public Expression expr = null;
 
-    public ExpressionStatement(Expression in_expr){
+    public ReturnStatement(Expression in_expr){
         expr = in_expr;
     }
-    
+
     public String printNode(int indent) {
         //Implement Print
         return null;

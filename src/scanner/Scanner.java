@@ -1,4 +1,4 @@
-package scanner;
+package src.scanner;
 import java.io.IOException;
 
 public interface Scanner {

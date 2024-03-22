@@ -1,11 +1,11 @@
-package src;
+package src.parser;
 
 public class VariableDeclaration extends Declaration {
     
-    public IDExpression id;
-    public NUMExpression num;
+    public String id;
+    public int num;
 
-    public VariableDeclaration(IDExpression in_id, NUMExpression in_num){
+    public VariableDeclaration(String in_id, int in_num){
         id = in_id;
         num = in_num;
     }

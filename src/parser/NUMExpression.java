@@ -1,4 +1,4 @@
-package src;
+package src.parser;
 
 public class NUMExpression extends Expression {
     

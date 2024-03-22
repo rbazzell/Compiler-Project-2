@@ -1,15 +1,13 @@
-package src;
+package src.parser;
 
-public class IDExpression extends Expression {
+public class ExpressionStatement extends Statement {
     
-    public String idStr;
     public Expression expr = null;
 
-    public IDExpression(String in_id, Expression in_expr){
-        idStr = in_id;
+    public ExpressionStatement(Expression in_expr){
         expr = in_expr;
     }
-
+    
     public String printNode(int indent) {
         //Implement Print
         return null;

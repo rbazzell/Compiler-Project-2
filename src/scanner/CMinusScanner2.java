@@ -13,7 +13,7 @@
 
 /* --------------------------Usercode Section------------------------ */
 
-package scanner;
+package src.scanner;
 
 import java.io.IOException;
 import java.io.BufferedReader;

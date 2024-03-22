@@ -1,4 +1,4 @@
-package src;
+package src.parser;
 
 public abstract class Declaration implements Node {
      

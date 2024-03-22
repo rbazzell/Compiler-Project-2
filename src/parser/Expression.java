@@ -1,4 +1,4 @@
-package src;
+package src.parser;
 
 public abstract class Expression implements Node{
 
