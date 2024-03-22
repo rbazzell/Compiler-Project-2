@@ -12,7 +12,6 @@ import src.scanner.DFAException;
 import src.scanner.Token;
 import src.scanner.Token.TokenType;
 
-
 public class CMinusParser {
     private CMinusScanner2 scanner;
     private Token currToken;
@@ -56,7 +55,7 @@ public class CMinusParser {
         Declaration decl = null;
         if (currToken.type == TokenType.VOID){
             //Take "void"
-            //TODO: add typeSpec ENUM
+            Declaration.typeSpecifier typeSpec = Declaration.typeSpecifier.VOID;
             currToken = scanner.getNextToken();
 
             if (currToken.type == TokenType.ID) {
@@ -66,28 +65,28 @@ public class CMinusParser {
 
                 decl = parseFunctionDeclarationPrime(typeSpec, id);
             } else {
-                throw new ParseException("() Expected: ID\nReceived: " + currToken.type.name());
+                throw new ParseException("parseDeclaration() Expected: ID\nReceived: " + currToken.type.name());
             }
             
         } else if (currToken.type == TokenType.INT) {
             //Take "int"
-
+            Declaration.typeSpecifier typeSpec = Declaration.typeSpecifier.INT;
             if (currToken.type == TokenType.ID) {
                 //Take ID
                 String id = (String) currToken.data;
                 currToken = scanner.getNextToken();
                 decl = parseDeclarationPrime(typeSpec, id);
             } else {
-                throw new ParseException("Expected: ID\nReceived: " + currToken.type.name());
+                throw new ParseException("parseDeclaration() Expected: ID\nReceived: " + currToken.type.name());
             }
 
         } else {
-            throw new ParseException("Expected: INT or VOID\nReceived: " + currToken.type.name());
+            throw new ParseException("parseDeclaration() Expected: INT or VOID\nReceived: " + currToken.type.name());
         }
         return null;
     }
 
-    private Declaration parseDeclarationPrime(TypeSpec typeSpec, String id) throws IOException, DFAException, ParseException {
+    private Declaration parseDeclarationPrime(Declaration.typeSpecifier typeSpec, String id) throws IOException, DFAException, ParseException {
         Declaration decl = null;
         if (currToken.type == TokenType.SEMI) {
             //Take ";"
@@ -103,21 +102,21 @@ public class CMinusParser {
                 num = (int)currToken.data;
                 currToken = scanner.getNextToken();
             } else {
-                throw new ParseException("Expected: NUM\nReceived: " + currToken.type.name());
+                throw new ParseException("parseDeclarationPrime() Expected: NUM\nReceived: " + currToken.type.name());
             }
 
             if (currToken.type == TokenType.R_BRACK) {
                 //Take ]
                 currToken = scanner.getNextToken();
             } else {
-                throw new ParseException("Expected: ]\nReceived: " + currToken.type.name());
+                throw new ParseException("parseDeclarationPrime() Expected: ]\nReceived: " + currToken.type.name());
             }
 
             if (currToken.type == TokenType.SEMI) {
                 //Take ;
                 currToken = scanner.getNextToken();
             } else {
-                throw new ParseException("Expected: ]\nReceived: " + currToken.type.name());
+                throw new ParseException("parseDeclarationPrime() Expected: ]\nReceived: " + currToken.type.name());
             }
 
             decl = new VariableDeclaration(id, num);
@@ -126,12 +125,12 @@ public class CMinusParser {
             decl = parseFunctionDeclarationPrime(typeSpec, id);
 
         } else {
-            throw new ParseException("Expected: ;, [, or (\nReceived: " + currToken.type.name());
+            throw new ParseException("parseDeclarationPrime() Expected: ;, [, or (\nReceived: " + currToken.type.name());
         }
         return decl;
     }
 
-    private Declaration parseFunctionDeclarationPrime(TypeSpec typeSpec, String id) throws IOException, DFAException, ParseException {
+    private Declaration parseFunctionDeclarationPrime(Declaration.typeSpecifier typeSpec, String id) throws IOException, DFAException, ParseException {
         Declaration funDecl = null;
         if (currToken.type == TokenType.L_PAREN) {
             //Take "("
@@ -142,15 +141,14 @@ public class CMinusParser {
                 //Take )
                 currToken = scanner.getNextToken();
             } else {
-                throw new ParseException("Expected: )\nReceived: " + currToken.type.name());
+                throw new ParseException("parseFunctionDeclarationPrime() Expected: )\nReceived: " + currToken.type.name());
             }
 
             CompoundStatement compoundStatement = parseCompoundStatement();
 
-            //TODO: Change FunctionDeclaration to take a typeSpec
             funDecl = new FunctionDeclaration(typeSpec, paramList, compoundStatement);
         } else {
-            throw new ParseException("Expected: (\nReceived: " + currToken.type.name());
+            throw new ParseException("parseFunctionDeclarationPrime() Expected: (\nReceived: " + currToken.type.name());
         }
 
         return funDecl;
@@ -159,8 +157,7 @@ public class CMinusParser {
     private ArrayList<Param> parseParamList() throws IOException, DFAException, ParseException {
         ArrayList<Param> paramList = new ArrayList<Param>();
         Param param = null;
-        //TODO: return null or empty paramList on a VOID?
-        if (currToken.type != TokenType.VOID) {
+        if (currToken.type == TokenType.INT) {
             param = parseParam();
             paramList.add(param);
             while (currToken.type == TokenType.COMMA) {
@@ -169,6 +166,12 @@ public class CMinusParser {
                 param = parseParam();
                 paramList.add(param);
             }
+        } else if (currToken.type == TokenType.VOID){
+            //take "void" 
+            currToken = scanner.getNextToken();
+            paramList = null;
+        } else{
+            throw new ParseException("parseParamList() Expected either a list of int params or \"void\"");
         }
         return paramList;
     }
@@ -181,7 +184,7 @@ public class CMinusParser {
             //Take "int"
             currToken = scanner.getNextToken();
         } else {
-            throw new ParseException("Expected: INT\nReceived: " + currToken.type.name());
+            throw new ParseException("parseParam() Expected: INT\nReceived: " + currToken.type.name());
         }
 
         if (currToken.type == TokenType.ID) {
@@ -189,7 +192,7 @@ public class CMinusParser {
             id = (String)currToken.data;
             currToken = scanner.getNextToken();
         } else {
-            throw new ParseException("Expected: ID\nReceived: " + currToken.type.name());
+            throw new ParseException("parseParam() Expected: ID\nReceived: " + currToken.type.name());
         }
 
         if (currToken.type == TokenType.L_BRACK) {
@@ -201,10 +204,10 @@ public class CMinusParser {
                 //Take ]
                 currToken = scanner.getNextToken();
             } else {
-                throw new ParseException("Expected: ]\nReceived: " + currToken.type.name());
+                throw new ParseException("parseParam() Expected: ]\nReceived: " + currToken.type.name());
             }
         } else {
-            throw new ParseException("Expected: [\nReceived: " + currToken.type.name());
+            throw new ParseException("parseParam() Expected: [\nReceived: " + currToken.type.name());
         }
 
         param = new Param(id, array);
@@ -231,10 +234,9 @@ public class CMinusParser {
             if (currToken.type == TokenType.ID) {
                 //Take ID
                 id = (String)currToken.data;
-                //TODO: Is this how we do this? or do we pass the NUM as a num expression to the ID?
                 currToken = scanner.getNextToken();
             } else {
-                throw new ParseException("Expected: ID\nReceived: " + currToken.type.name());
+                throw new ParseException("parseLocalDeclarations() Expected: ID\nReceived: " + currToken.type.name());
             }
 
             if (currToken.type == TokenType.L_BRACK) {
@@ -246,14 +248,14 @@ public class CMinusParser {
                     num = (int)currToken.data;
                     currToken = scanner.getNextToken();
                 } else {
-                    throw new ParseException("Expected: NUM\nReceived: " + currToken.type.name());
+                    throw new ParseException("parseLocalDeclarations() Expected: NUM\nReceived: " + currToken.type.name());
                 }
 
                 if (currToken.type == TokenType.R_BRACK) {
                     //Take ]
                     currToken = scanner.getNextToken();
                 } else {
-                    throw new ParseException("Expected: ]\nReceived: " + currToken.type.name());
+                    throw new ParseException("parseLocalDeclarations() Expected: ]\nReceived: " + currToken.type.name());
                 }
 
             }
@@ -266,8 +268,8 @@ public class CMinusParser {
 
     private ArrayList<Statement> parseStatementList() throws IOException, DFAException, ParseException {
         ArrayList<Statement> statementList = new ArrayList<Statement>();
-        while (currToken.type == TokenType.ID || currToken.type == TokenType.NUM || currToken.type == TokenType.L_PAREN
-            || currToken.type == TokenType.L_CURLY || currToken.type == TokenType.IF || currToken.type == TokenType.WHILE 
+        while (currToken.type == TokenType.ID      || currToken.type == TokenType.NUM || currToken.type == TokenType.L_PAREN
+            || currToken.type == TokenType.L_CURLY || currToken.type == TokenType.IF  || currToken.type == TokenType.WHILE 
             || currToken.type == TokenType.RETURN) {
                 statementList.add(parseStatement());
                 //currToken = scanner.getNextToken(); DONT THINK WE NEED THIS HERE
@@ -288,7 +290,7 @@ public class CMinusParser {
         } else if (currToken.type == TokenType.RETURN) {
             lhs = parseReturnStatement();
         } else {
-            throw new ParseException("Expected: ID, NUM, (, {, IF, WHILE, or RETURN\nRecieved: " + currToken.type.name());
+            throw new ParseException("parseStatement() Expected: ID, NUM, (, {, IF, WHILE, or RETURN\nRecieved: " + currToken.type.name());
         }
         return lhs;
     }
@@ -301,7 +303,7 @@ public class CMinusParser {
             //Take ";"
             currToken = scanner.getNextToken();
         } else {
-            throw new ParseException("Expected: ;\nRecieved: " + currToken.type.name());
+            throw new ParseException("parseExpressionStatement() Expected: ;\nRecieved: " + currToken.type.name());
         }
 
         return new ExpressionStatement(expression);
@@ -317,7 +319,7 @@ public class CMinusParser {
             //Take "("
             currToken = scanner.getNextToken();
         } else {
-            throw new ParseException("Expected: (\nRecieved: " + currToken.type.name());
+            throw new ParseException("parseSelectionStatement() Expected: (\nRecieved: " + currToken.type.name());
         }
 
         ifExpression = parseExpression();
@@ -326,7 +328,7 @@ public class CMinusParser {
             //Take "("
             currToken = scanner.getNextToken();
         } else {
-            throw new ParseException("Expected: )\nRecieved: " + currToken.type.name());
+            throw new ParseException("parseSelectionStatement() Expected: )\nRecieved: " + currToken.type.name());
         }
 
         ifStatement = parseStatement();
@@ -351,7 +353,7 @@ public class CMinusParser {
             //Take "("
             currToken = scanner.getNextToken();
         } else {
-            throw new ParseException("Expected: (\nRecieved: " + currToken.type.name());
+            throw new ParseException("parseIterationStatement() Expected: (\nRecieved: " + currToken.type.name());
         }
 
         whileExpression = parseExpression();
@@ -360,7 +362,7 @@ public class CMinusParser {
             //Take "("
             currToken = scanner.getNextToken();
         } else {
-            throw new ParseException("Expected: )\nRecieved: " + currToken.type.name());
+            throw new ParseException("parseIterationStatement() Expected: )\nRecieved: " + currToken.type.name());
         }
 
         whileStatement = parseStatement();
@@ -381,7 +383,7 @@ public class CMinusParser {
             //Take ";"
             currToken = scanner.getNextToken();
         } else {
-            throw new ParseException("Expected: ;\nRecieved: " + currToken.type.name());
+            throw new ParseException("parseReturnStatement() Expected: ;\nRecieved: " + currToken.type.name());
         }
 
         return new ReturnStatement(returnExpression);
@@ -410,13 +412,13 @@ public class CMinusParser {
                 //Take ")"
                 currToken = scanner.getNextToken();
             } else {
-                throw new ParseException("Expected: )\nRecieved: " + currToken.type.name());
+                throw new ParseException("parseExpression() Expected: )\nRecieved: " + currToken.type.name());
             }
 
             expression = parseSimpleExpressionPrime(inExpression);
 
         } else {
-            throw new ParseException("Expected: ID, NUM, L_PAREN\nRecieved: " + currToken.type.name());
+            throw new ParseException("parseExpression() Expected: ID, NUM, L_PAREN\nRecieved: " + currToken.type.name());
         }
         return expression;
     }
@@ -439,7 +441,7 @@ public class CMinusParser {
                 //Take "]"
                 currToken = scanner.getNextToken();
             } else {
-                throw new ParseException("Expected: ]\nRecieved: " + currToken.type.name());
+                throw new ParseException("parseExpressionPrime() Expected: ]\nRecieved: " + currToken.type.name());
             }
 
             IDExpression idExpression = new IDExpression(id, inExpression);
@@ -455,7 +457,7 @@ public class CMinusParser {
                 //Take "("
                 currToken = scanner.getNextToken();
             } else {
-                throw new ParseException("Expected: )\nRecieved: " + currToken.type.name());
+                throw new ParseException("parseExpressionPrime() Expected: )\nRecieved: " + currToken.type.name());
             }
 
             IDExpression idExpression = new IDExpression(id, null);
@@ -489,13 +491,11 @@ public class CMinusParser {
         if (currToken.type == TokenType.LTE || currToken.type == TokenType.LT || currToken.type == TokenType.GT || currToken.type == TokenType.GTE 
             || currToken.type == TokenType.EQ || currToken.type == TokenType.NEQ) {
                 //Take relop
-                //TODO: CHANGE TO SPECIFIC RELOP ENUM TYPE
-                Token relop = parseRelop();
+                Expression.Operator relop = parseRelop();
                 currToken = scanner.getNextToken();
                 Expression rhs = parseAdditiveExpression(null);
 
-                //TODO: PART OF THAT ENUM FIX                     VVVVVV
-                expression = new BinaryExpression(expression, rhs, 'r');
+                expression = new BinaryExpression(expression, rhs, relop);
         }
 
         return expression;
@@ -503,16 +503,14 @@ public class CMinusParser {
     }
 
     private Expression parseAdditiveExpression(Expression lhs) throws IOException, DFAException, ParseException {
-        lhs = parseTerm(lhs); //if null, gets passed and treated as AdditiveExpressionPrime
+        lhs = parseTerm(lhs); //if not null, treated as AdditiveExpressionPrime()
         while (currToken.type == TokenType.PLUS || currToken.type == TokenType.MINUS) {
             //Take addop
-            //TODO: CHANGE TO SPECIFIC ADDOP ENUM TYPE
-            Token addop = parseAddop();
+            Expression.Operator addop = parseAddop();
             currToken = scanner.getNextToken();
             Expression rhs = parseTerm(null);
 
-            //TODO: PART OF THAT ENUM FIX       VVVVVV
-            lhs = new BinaryExpression(lhs, rhs, 'a');
+            lhs = new BinaryExpression(lhs, rhs, addop);
         }
 
         return lhs;
@@ -525,27 +523,51 @@ public class CMinusParser {
         //now just do parse Term', but since we made sure we have the lhs, works for Term and Term'
         while (currToken.type == TokenType.MULT || currToken.type == TokenType.DIV) {
             //Take mulop
-            //TODO: CHANGE TO SPECIFIC MULOP ENUM TYPE
-            Token mulop = parseMulop();
+            Expression.Operator mulop = parseMulop();
             currToken = scanner.getNextToken();
             Expression rhs = parseFactor();
 
-            //TODO: PART OF THAT ENUM FIX      VVVVVV
-            lhs = new BinaryExpression(lhs, rhs, 'm');
+            lhs = new BinaryExpression(lhs, rhs, mulop);
         }
 
         return lhs;
     }
 
-    private Token parseRelop() throws IOException, DFAException, ParseException {
+    private Expression.Operator parseRelop() throws IOException, DFAException, ParseException {
+        Expression.Operator retOp = null;
+        //if (currToken.type == TokenType.LTE || currToken.type == TokenType.LT || currToken.type == TokenType.GT || currToken.type == TokenType.GTE 
+          //  || currToken.type == TokenType.EQ || currToken.type == TokenType.NEQ) {
+        switch(currToken.type){
+            case LTE:
+                retOp = Expression.Operator.LTE;
+                break;
+            case LT:
+                break;
+            case GT:
+                break;
+            case GTE:
+                break;
+            case EQ:
+                break;
+            case NEQ:
+                break;
+            default:
+                throw new ParseException("parseRelop() Error: Recieved a non-Relop token");
+        }
+        return retOp;
+    }
+
+    private Expression.Operator parseAddop() throws IOException, DFAException, ParseException {
+        switch(currToken.type){
+            
+        }
         return null;
     }
 
-    private Token parseAddop() throws IOException, DFAException, ParseException {
-        return null;
-    }
-
-    private Token parseMulop() throws IOException, DFAException, ParseException {
+    private Expression.Operator parseMulop() throws IOException, DFAException, ParseException {
+        switch(currToken.type){
+            
+        }
         return null;
     }
 
@@ -572,7 +594,7 @@ public class CMinusParser {
             expression = new NUMExpression(num);
 
         } else {
-            throw new ParseException("Expected: (, ID, or NUM\nRecieved: " + currToken.type.name());
+            throw new ParseException("parseFactor() Expected: (, ID, or NUM\nRecieved: " + currToken.type.name());
         }
 
         return expression;
@@ -590,7 +612,7 @@ public class CMinusParser {
                 //Take "]"
                 currToken = scanner.getNextToken();
             } else {
-                throw new ParseException("Expected: ]\nRecieved: " + currToken.type.name());
+                throw new ParseException("parseVarcall() Expected: ]\nRecieved: " + currToken.type.name());
             }
 
             expression = new IDExpression(id, inExpression);
@@ -604,7 +626,7 @@ public class CMinusParser {
                 //Take ")"
                 currToken = scanner.getNextToken();
             } else {
-                throw new ParseException("Expected: )\nRecieved: " + currToken.type.name());
+                throw new ParseException("parseVarcall() Expected: )\nRecieved: " + currToken.type.name());
             }
 
             IDExpression idExpression = new IDExpression(id, null);

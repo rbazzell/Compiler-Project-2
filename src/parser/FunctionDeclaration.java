@@ -3,12 +3,11 @@ import java.util.ArrayList;
 
 public class FunctionDeclaration extends Declaration {
     
-    public String typeSpec;
+    public typeSpecifier typeSpec;
     public ArrayList<Param> params = null;
     public CompoundStatement stmt;
 
-    //TODO: Needs to be a TypeSpec VVVVVVVVVV
-    public FunctionDeclaration(String in_type, ArrayList<Param> in_params, CompoundStatement in_stmt){
+    public FunctionDeclaration(typeSpecifier in_type, ArrayList<Param> in_params, CompoundStatement in_stmt){
         typeSpec = in_type;
         params = in_params;
         stmt = in_stmt;
