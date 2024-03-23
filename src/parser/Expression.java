@@ -9,10 +9,9 @@ public abstract class Expression implements Node{
         GTE, 
         EQ, 
         NEQ, 
-        PLUS, 
-        ADD, 
-        SUB, 
-        MUL, 
+        PLUS,
+        MINUS, 
+        MULT, 
         DIV 
     };
 

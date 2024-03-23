@@ -542,14 +542,19 @@ public class CMinusParser {
                 retOp = Expression.Operator.LTE;
                 break;
             case LT:
+                retOp = Expression.Operator.LT;
                 break;
             case GT:
+                retOp = Expression.Operator.GT;
                 break;
             case GTE:
+                retOp = Expression.Operator.GTE;
                 break;
             case EQ:
+                retOp = Expression.Operator.EQ;
                 break;
             case NEQ:
+                retOp = Expression.Operator.NEQ;
                 break;
             default:
                 throw new ParseException("parseRelop() Error: Recieved a non-Relop token");
@@ -558,15 +563,31 @@ public class CMinusParser {
     }
 
     private Expression.Operator parseAddop() throws IOException, DFAException, ParseException {
+        Expression.Operator retOp = null;
         switch(currToken.type){
-            
+            case PLUS:
+                retOp = Expression.Operator.PLUS;
+                break;
+            case MINUS:
+                retOp = Expression.Operator.MINUS;
+                break;
+            default:
+                throw new ParseException("parseAddop() Error: Recieved a non-Addop token");
         }
-        return null;
+        return retOp;
     }
 
     private Expression.Operator parseMulop() throws IOException, DFAException, ParseException {
+        Expression.Operator retOp = null;
         switch(currToken.type){
-            
+            case DIV:
+                retOp = Expression.Operator.DIV;
+                break;
+            case MULT:
+                retOp = Expression.Operator.MULT;
+                break;
+            default:
+                throw new ParseException("parseMulop() Error: Recieved a non-Mulop token");
         }
         return null;
     }
