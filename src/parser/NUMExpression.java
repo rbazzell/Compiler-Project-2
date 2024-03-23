@@ -1,15 +1,15 @@
 package src.parser;
 
 public class NUMExpression extends Expression {
-    
+
     public int num;
 
-    public NUMExpression(int in_num){
+    public NUMExpression(int in_num) {
         num = in_num;
     }
 
     public String printNode(int indent) {
-        //Implement Print
+        // Implement Print
         return null;
     }
 }

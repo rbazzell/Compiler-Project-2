@@ -1,17 +1,18 @@
 package src.scanner;
+
 public class Token {
     public enum TokenType {
-        ID,            //VARS & LITERALS
-        NUM, 
+        ID, // VARS & LITERALS
+        NUM,
 
-        IF,            //KEYWORDS
+        IF, // KEYWORDS
         ELSE,
         WHILE,
         RETURN,
         INT,
         VOID,
-        
-        SEMI,          //SPECIAL CHARACTERS
+
+        SEMI, // SPECIAL CHARACTERS
         COMMA,
         L_BRACK,
         R_BRACK,
@@ -19,8 +20,8 @@ public class Token {
         R_PAREN,
         L_CURLY,
         R_CURLY,
-        
-        ASSIGN,        //OPERATORS
+
+        ASSIGN, // OPERATORS
         GT,
         GTE,
         LT,
@@ -32,18 +33,18 @@ public class Token {
         MULT,
         DIV,
 
-        EOF,            //FILE TOKENS
+        EOF, // FILE TOKENS
         ERR
     }
 
     public TokenType type;
     public Object data;
 
-    public Token(TokenType tokenType){
-        this(tokenType,null);
+    public Token(TokenType tokenType) {
+        this(tokenType, null);
     }
-    
-    public Token(TokenType tokenType, Object tokenData){
+
+    public Token(TokenType tokenType, Object tokenData) {
         type = tokenType;
         data = tokenData;
     }

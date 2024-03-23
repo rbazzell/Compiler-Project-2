@@ -1,8 +1,9 @@
 package src.parser;
+
 import java.util.ArrayList;
 
 public class CompoundStatement extends Statement {
-    
+
     public ArrayList<VariableDeclaration> localDecls = null;
     public ArrayList<Statement> stmtList = null;
 
@@ -12,7 +13,7 @@ public class CompoundStatement extends Statement {
     }
 
     public String printNode(int indent) {
-        //Implement Print
+        // Implement Print
         return null;
     }
 }
