@@ -1,6 +1,6 @@
 package src.parser;
 
-public class Param implements Node {
+public class Param {
 
     public String idStr;
     public boolean hasBrackets;
@@ -10,7 +10,7 @@ public class Param implements Node {
         hasBrackets = in_hasBrackets;
     }
 
-    public String printNode(int indent) {
+    public String print(int indent) {
         String printString = "\t".repeat(indent) + "INT ";
         printString += idStr;
         if(hasBrackets){

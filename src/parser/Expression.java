@@ -1,6 +1,6 @@
 package src.parser;
 
-public abstract class Expression implements Node {
+public abstract class Expression {
 
     public static enum Operator {
         LTE,
@@ -15,5 +15,5 @@ public abstract class Expression implements Node {
         DIV
     };
 
-    public abstract String printNode(int indent);
+    public abstract String print(int indent);
 }

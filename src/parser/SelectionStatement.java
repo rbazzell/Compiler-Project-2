@@ -12,13 +12,13 @@ public class SelectionStatement extends Statement {
         elseStmt = in_elseStmt;
     }
 
-    public String printNode(int indent) {
+    public String print(int indent) {
         String printStr = "\t".repeat(indent) + "if\n";
-        printStr += expr.printNode(indent + 1);
-        printStr += stmt.printNode(indent + 1);
+        printStr += expr.print(indent + 1);
+        printStr += stmt.print(indent + 1);
         if (elseStmt != null) {
             printStr += "\t".repeat(indent) + "else\n";
-            printStr += elseStmt.printNode(indent + 1);
+            printStr += elseStmt.print(indent + 1);
         }
         return printStr;
     }

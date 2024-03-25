@@ -1,11 +1,11 @@
 package src.parser;
 
-public abstract class Declaration implements Node {
+public abstract class Declaration {
 
      public static enum typeSpecifier {
           VOID,
           INT
      }
 
-     public abstract String printNode(int indent);
+     public abstract String print(int indent);
 }

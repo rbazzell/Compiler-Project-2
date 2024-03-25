@@ -745,7 +745,7 @@ public class CMinusParser {
     }
 
     private static void printTree(Program head, boolean toFile, String filename) {
-        String output = head.printNode(0);
+        String output = head.print(0);
         if (toFile) {
             try {
                 BufferedWriter out = new BufferedWriter(new FileWriter(filename));

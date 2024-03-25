@@ -12,7 +12,7 @@ public class BinaryExpression extends Expression {
         type = in_type;
     }
 
-    public String printNode(int indent) {
+    public String print(int indent) {
         String printString = "\t".repeat(indent);
         switch(type){
             case DIV:
@@ -46,8 +46,8 @@ public class BinaryExpression extends Expression {
                 printString += "+\n";
                 break;
         }
-        printString += lhs.printNode(indent + 1);
-        printString += rhs.printNode(indent + 1);
+        printString += lhs.print(indent + 1);
+        printString += rhs.print(indent + 1);
         
         return printString;
     }

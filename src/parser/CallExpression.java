@@ -12,11 +12,11 @@ public class CallExpression extends Expression {
         args = in_args;
     }
 
-    public String printNode(int indent) {
+    public String print(int indent) {
         String printStr = "\t".repeat(indent);
         printStr += callID + "()\n";
         for (Expression arg : args) {
-            printStr += arg.printNode(indent + 1);
+            printStr += arg.print(indent + 1);
         }
         return printStr;
     }

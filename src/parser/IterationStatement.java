@@ -10,10 +10,10 @@ public class IterationStatement extends Statement {
         stmt = in_stmt;
     }
 
-    public String printNode(int indent) {
+    public String print(int indent) {
         String printStr = "\t".repeat(indent) + "while\n";
-        printStr += expr.printNode(indent + 1);
-        printStr += stmt.printNode(indent + 1);
+        printStr += expr.print(indent + 1);
+        printStr += stmt.print(indent + 1);
         return printStr;
     }
 }

@@ -10,10 +10,10 @@ public class AssignExpression extends Expression {
         rhs = in_rhs;
     }
 
-    public String printNode(int indent) {
+    public String print(int indent) {
         String printStr = "\t".repeat(indent) + "=\n";
-        printStr += lhs.printNode(indent + 1);
-        printStr += rhs.printNode(indent + 1);
+        printStr += lhs.print(indent + 1);
+        printStr += rhs.print(indent + 1);
         return printStr;
     }
 }

@@ -16,13 +16,13 @@ public class FunctionDeclaration extends Declaration {
         stmt = in_stmt;
     }
 
-    public String printNode(int indent) {
+    public String print(int indent) {
         String printStr = "\t".repeat(indent);
         printStr += typeSpec.name() + " " + id + "()\n";
         for (Param param : params) {
-            printStr += param.printNode(indent + 1);
+            printStr += param.print(indent + 1);
         }
-        printStr += stmt.printNode(indent + 1);
+        printStr += stmt.print(indent + 1);
         return printStr;
     }
 }

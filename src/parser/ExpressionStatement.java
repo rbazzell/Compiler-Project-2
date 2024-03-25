@@ -8,10 +8,10 @@ public class ExpressionStatement extends Statement {
         expr = in_expr;
     }
 
-    public String printNode(int indent) {
+    public String print(int indent) {
         String printStr = "";
         if(expr != null){
-            printStr += expr.printNode(indent);
+            printStr += expr.print(indent);
         }
         return printStr;
     }
