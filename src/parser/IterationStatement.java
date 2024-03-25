@@ -11,7 +11,9 @@ public class IterationStatement extends Statement {
     }
 
     public String printNode(int indent) {
-        // Implement Print
-        return null;
+        String printStr = "\t".repeat(indent) + "while\n";
+        printStr += expr.printNode(indent + 1);
+        printStr += stmt.printNode(indent + 1);
+        return printStr;
     }
 }

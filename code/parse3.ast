@@ -1,0 +1,27 @@
+PROGRAM
+	INT a
+	INT b
+	VOID main()
+		{ }
+			INT x
+			if
+				==
+					-
+						+
+							*
+								a
+								4
+							/
+								b
+								5
+						3
+					10
+				{ }
+					=
+						x
+						2
+			else
+				{ }
+					=
+						x
+						5

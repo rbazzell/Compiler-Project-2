@@ -13,7 +13,42 @@ public class BinaryExpression extends Expression {
     }
 
     public String printNode(int indent) {
-        // Implement Print
-        return null;
+        String printString = "\t".repeat(indent);
+        switch(type){
+            case DIV:
+                printString += "/\n";
+                break;
+            case EQ:
+                printString += "==\n";
+                break;
+            case GT:
+                printString += ">\n";
+                break;
+            case GTE:
+                printString += ">=\n";
+                break;
+            case LT:
+                printString += "<\n";
+                break;
+            case LTE:
+                printString += "<=\n";
+                break;
+            case MINUS:
+                printString += "-\n";
+                break;
+            case MULT:
+                printString += "*\n";
+                break;
+            case NEQ:
+                printString += "!=\n";
+                break;
+            case PLUS:
+                printString += "+\n";
+                break;
+        }
+        printString += lhs.printNode(indent + 1);
+        printString += rhs.printNode(indent + 1);
+        
+        return printString;
     }
 }

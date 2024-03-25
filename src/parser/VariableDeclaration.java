@@ -11,7 +11,10 @@ public class VariableDeclaration extends Declaration {
     }
 
     public String printNode(int indent) {
-        // Implement Print
-        return null;
+        String printStr = "\t".repeat(indent) + "INT " + id;
+        if(num != 0){
+            printStr += "[" + num + "]";
+        }
+        return printStr + "\n";
     }
 }

@@ -9,7 +9,10 @@ public class ExpressionStatement extends Statement {
     }
 
     public String printNode(int indent) {
-        // Implement Print
-        return null;
+        String printStr = "";
+        if(expr != null){
+            printStr += expr.printNode(indent);
+        }
+        return printStr;
     }
 }

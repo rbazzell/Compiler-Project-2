@@ -1,0 +1,12 @@
+int a;
+int b[2];
+
+void main(void) {
+    a = 3;
+    b[1] = 4;
+    a = add(a, b);
+}
+
+int add(int a, int b[]) {
+    return a + b[1];
+}

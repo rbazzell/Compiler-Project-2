@@ -12,6 +12,13 @@ public class IDExpression extends Expression {
 
     public String printNode(int indent) {
         // Implement Print
-        return null;
+        String printString = "\t".repeat(indent);
+        printString += idStr;
+        if(expr != null) {
+            printString += "[]\n" + expr.printNode(indent + 1);
+        } else {
+            printString += "\n";
+        }
+        return printString;
     }
 }

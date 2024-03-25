@@ -13,7 +13,13 @@ public class SelectionStatement extends Statement {
     }
 
     public String printNode(int indent) {
-        // Implement Print
-        return null;
+        String printStr = "\t".repeat(indent) + "if\n";
+        printStr += expr.printNode(indent + 1);
+        printStr += stmt.printNode(indent + 1);
+        if (elseStmt != null) {
+            printStr += "\t".repeat(indent) + "else\n";
+            printStr += elseStmt.printNode(indent + 1);
+        }
+        return printStr;
     }
 }

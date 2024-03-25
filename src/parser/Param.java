@@ -11,7 +11,12 @@ public class Param implements Node {
     }
 
     public String printNode(int indent) {
-        // Implement Print
-        return null;
+        String printString = "\t".repeat(indent) + "INT ";
+        printString += idStr;
+        if(hasBrackets){
+            printString += "[]";
+        }
+        printString += "\n";
+        return printString;
     }
 }

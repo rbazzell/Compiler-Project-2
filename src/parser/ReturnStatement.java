@@ -9,7 +9,11 @@ public class ReturnStatement extends Statement {
     }
 
     public String printNode(int indent) {
-        // Implement Print
-        return null;
+        String printString = "\t".repeat(indent);
+        printString += "return\n";
+        if(expr != null){
+            printString += expr.printNode(indent + 1);
+        }
+        return printString;
     }
 }

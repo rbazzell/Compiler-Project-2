@@ -13,7 +13,17 @@ public class CompoundStatement extends Statement {
     }
 
     public String printNode(int indent) {
-        // Implement Print
-        return null;
+        String printStr = "\t".repeat(indent) + "{ }\n";
+        if(localDecls != null){
+            for(int i = 0; i < localDecls.size(); i++){
+                printStr += localDecls.get(i).printNode(indent + 1);
+            }
+        } 
+        if(stmtList != null){
+            for(int i = 0; i < stmtList.size(); i++){
+                printStr += stmtList.get(i).printNode(indent + 1);
+            }
+        } 
+        return printStr;
     }
 }

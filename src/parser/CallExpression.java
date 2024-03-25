@@ -4,15 +4,20 @@ import java.util.ArrayList;
 
 public class CallExpression extends Expression {
 
-    public IDExpression callID = null;
+    public String callID = null;
     public ArrayList<Expression> args = null;
 
-    public CallExpression(IDExpression in_ID, ArrayList<Expression> in_args) {
+    public CallExpression(String in_ID, ArrayList<Expression> in_args) {
+        callID = in_ID;
         args = in_args;
     }
 
     public String printNode(int indent) {
-        // Implement Print
-        return null;
+        String printStr = "\t".repeat(indent);
+        printStr += callID + "()\n";
+        for (Expression arg : args) {
+            printStr += arg.printNode(indent + 1);
+        }
+        return printStr;
     }
 }

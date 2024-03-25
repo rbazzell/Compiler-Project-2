@@ -5,17 +5,24 @@ import java.util.ArrayList;
 public class FunctionDeclaration extends Declaration {
 
     public typeSpecifier typeSpec;
+    public String id;
     public ArrayList<Param> params = null;
     public CompoundStatement stmt;
 
-    public FunctionDeclaration(typeSpecifier in_type, ArrayList<Param> in_params, CompoundStatement in_stmt) {
+    public FunctionDeclaration(typeSpecifier in_type, String in_id, ArrayList<Param> in_params, CompoundStatement in_stmt) {
         typeSpec = in_type;
+        id = in_id;
         params = in_params;
         stmt = in_stmt;
     }
 
     public String printNode(int indent) {
-        // Implement Print
-        return null;
+        String printStr = "\t".repeat(indent);
+        printStr += typeSpec.name() + " " + id + "()\n";
+        for (Param param : params) {
+            printStr += param.printNode(indent + 1);
+        }
+        printStr += stmt.printNode(indent + 1);
+        return printStr;
     }
 }

@@ -9,7 +9,8 @@ public class NUMExpression extends Expression {
     }
 
     public String printNode(int indent) {
-        // Implement Print
-        return null;
+        String printString = "\t".repeat(indent);
+        printString += num + "\n";
+        return printString;
     }
 }

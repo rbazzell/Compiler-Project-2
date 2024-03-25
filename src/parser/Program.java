@@ -11,7 +11,10 @@ public class Program implements Node {
     }
 
     public String printNode(int indent) {
-        // Implement Print
-        return null;
+        String printStr = "\t".repeat(indent) + "PROGRAM\n";
+        for (Declaration decl : decls) {
+            printStr += decl.printNode(indent + 1);
+        }
+        return printStr;
     }
 }
